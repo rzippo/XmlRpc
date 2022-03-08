@@ -319,6 +319,7 @@ function Send-XmlRpcRequest
             $client.Encoding = [System.Text.Encoding]::UTF8
             $response = $client.UploadString($Url, $methodCall)
 
+            Write-Debug $response
             $doc = New-Object Xml.XmlDocument
             $doc.LoadXml($response)
             [Xml.XmlDocument]$doc
