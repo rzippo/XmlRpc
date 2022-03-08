@@ -246,18 +246,16 @@ function ConvertTo-XmlRpcMethodCall
     Process
     {
         [String]((&{
-            "<?xml version=""1.0""?><methodCall><methodName>$($Name)</methodName><params>"
-            if($Params)
+            "<?xml version=""1.0""?><methodCall><methodName>$($Name)</methodName>"
+            if($Params -and $Params.Count -gt 0)
             {
+                "<params>"
                 $Params | ForEach-Object {
                     "<param>$(&{ConvertTo-XmlRpcType $_ -CustomTypes $CustomTypes})</param>"
                 }
+                "</params>"
             }
-            else
-            {
-                "$(ConvertTo-XmlRpcType $NULL)"
-            }
-            "</params></methodCall>"
+            "</methodCall>"
         }) -join(''))
     }
 
