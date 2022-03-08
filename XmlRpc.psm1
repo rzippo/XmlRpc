@@ -76,8 +76,20 @@ function ConvertTo-XmlRpcType
             return "<value></value>"
         }
 
+        # Int32 and Int16 are considered both int
+        if (('Int32','Int16') -contains $Type)
+        {
+            return "<value><int>$inputObject</int></value>"
+        }
+
+        # Return In64 as Double
+        if (('Int64') -contains $Type)
+        {
+            return "<value><Double>$inputObject</Double></value>"
+        }
+
         # Return simple Types
-        if (('Double','Int32','Boolean','False') -contains $Type)
+        if (('Double','Boolean','False') -contains $Type)
         {
             return "<value><$($Type)>$($inputObject)</$($Type)></value>"
         }
@@ -88,23 +100,11 @@ function ConvertTo-XmlRpcType
             return "<value><string>$([System.Web.HttpUtility]::HtmlEncode($inputObject))</string></value>"
         }
 
-        # Int32 must be casted as Int
-        if ($Type -eq 'Int16')
-        {
-            return "<value><int>$inputObject</int></value>"
-        }
-
         if ($type -eq "SwitchParameter")
         {
             return "<value><boolean>$inputObject.IsPresent</boolean></value>"
         }
-
-        # Return In64 as Double
-        if (('Int64') -contains $Type)
-        {
-            return "<value><Double>$inputObject</Double></value>"
-        }
-
+        
         # DateTime
         if('DateTime' -eq $Type)
         {
