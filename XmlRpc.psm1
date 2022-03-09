@@ -446,3 +446,24 @@ function ConvertFrom-Xml
 
     End {}
 }
+
+function Format-Xml
+{
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+        [Xml.XmlDocument]$doc,
+
+        [Parameter()]
+        [int]$indent = 2
+    )
+
+    $StringWriter = New-Object System.IO.StringWriter
+    $XmlWriter = New-Object System.XMl.XmlTextWriter $StringWriter
+    $xmlWriter.Formatting = "indented"
+    $xmlWriter.Indentation = $Indent
+    $doc.WriteContentTo($XmlWriter)
+    $XmlWriter.Flush()
+    $StringWriter.Flush()
+    Write-Output $StringWriter.ToString()
+}

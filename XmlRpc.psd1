@@ -70,7 +70,8 @@
         'ConvertTo-XmlRpcType'
         'ConvertTo-XmlRpcMethodCall'
         'Send-XmlRpcRequest'
-        'ConvertFrom-Xml'
+        'ConvertFrom-Xml',
+        'Format-Xml'
     )
 
     # Cmdlets to export from this module
