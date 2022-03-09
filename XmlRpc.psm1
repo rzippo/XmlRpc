@@ -308,6 +308,7 @@ function Send-XmlRpcRequest
     {
         if (!$methodCall) {
             $methodCall = ConvertTo-XmlRpcMethodCall $MethodName $Params -CustomTypes $CustomTypes
+            $global:lastRequest = $methodCall;
             Write-Debug "Request BODY: $methodCall"
         }
 
@@ -316,8 +317,9 @@ function Send-XmlRpcRequest
             $client = New-Object Net.WebClient
             $client.Encoding = [System.Text.Encoding]::UTF8
             $response = $client.UploadString($Url, $methodCall)
+            $global:lastResponse = $response;
+            Write-Debug $response;
 
-            Write-Debug $response
             $doc = New-Object Xml.XmlDocument
             $doc.LoadXml($response)
             [Xml.XmlDocument]$doc
